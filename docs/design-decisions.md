@@ -4,7 +4,7 @@ nav_order: 3
 ---
 
 {: .label }
-[Jane Dane]
+[65Coders]
 
 {: .no_toc }
 # Design decisions
@@ -16,77 +16,134 @@ nav_order: 3
 {: toc }
 </details>
 
-## 01: [Title]
+## 01: Firebase vs. SQL Database for Data Management
 
 ### Meta
 
-Status
-: **Work in progress** - Decided - Obsolete
+Status  
+: **Entschieden**
 
-Updated
-: DD-MMM-YYYY
+Aktualisiert  
+: 19-Nov-2024
 
-### Problem statement
+### Problemstellung
 
-[Describe the problem to be solved or the goal to be achieved. Include relevant context information.]
+Wir mussten entscheiden, ob wir die Daten unserer Anwendung (z. B. Events, Nutzer, RSVP-Zähler) mit Firebase Firestore oder einer SQL-Datenbank (z. B. SQLite, MySQL) verwalten.  
 
-### Decision
+Die Kernanforderungen waren:  
+1. Echtzeit-Datenaktualisierungen für die RSVP-Funktionalität.  
+2. Skalierbarkeit, um mit wachsenden Datenmengen umgehen zu können.  
+3. Eine einfache Integration mit unserem Flask-Backend.  
 
-[Describe **which** design decision was taken for **what reason** and by **whom**.]
+Zusätzlich wollten wir neue Technologien ausprobieren, da Firebase für uns neu ist. Unser Ziel war es, unser Wissen zu erweitern und praktische Erfahrungen mit modernen Technologien zu sammeln.
 
-### Regarded options
+### Entscheidung
 
-[Describe any possible design decision that will solve the problem. Assess these options, e.g., via a simple pro/con list.]
+Wir haben uns für **Firebase Firestore** entschieden.  
+
+Firebase überzeugt durch seine integrierten Echtzeit-Funktionen und die einfache Integration mit Flask über Bibliotheken wie `pyrebase` und `firebase-admin`. Darüber hinaus bietet Firebase integrierte Authentifizierungs- und Cloud-Storage-Dienste, wodurch der Entwicklungsaufwand reduziert wird.  
+
+Diese Entscheidung bietet uns auch die Möglichkeit, eine neue Technologie zu erlernen und unser Wissen im Bereich moderner Datenbanken zu erweitern.  
+
+*Entscheidung getroffen von:* Lamine Touré (Backend Lead), Veysel Sam (Frontend Lead).
+
+### Betrachtete Optionen
+
+Wir haben zwei Alternativen betrachtet:
+
++ Firebase Firestore  
++ SQL-Datenbank (SQLite oder MySQL)
+
+| Kriterium                  | Firebase Firestore      | SQL-Datenbank         |
+| -------------------------- | ----------------------- | --------------------- |
+| **Echtzeit-Aktualisierungen** | ✔️ Eingebaute Unterstützung | ❌ Zusätzliche Konfiguration erforderlich |
+| **Integration**            | ✔️ Einfach mit Flask-SDKs | ❌ Manuelle Einrichtung notwendig |
+| **Skalierbarkeit**         | ✔️ Kein manuelles Skalieren erforderlich | ❌ Manuelles Skalieren nötig |
+| **Benutzerfreundlichkeit** | ✔️ Minimaler Aufwand    | ❌ Komplexe Schema- und Migrationserstellung |
+| **Kosten**                 | ❔ Kostenlose Stufe verfügbar | ✔️ Meist kostenlos mit SQLite |
+| **Lernmöglichkeit**        | ✔️ Neue Technologie, die wir erlernen möchten | ❌ Bereits bekannt, bietet wenig Lernpotenzial |
 
 ---
 
-## [Example, delete this section] 01: How to access the database - SQL or SQLAlchemy 
+## 02: Backend Framework - Flask
 
 ### Meta
 
-Status
-: Work in progress - **Decided** - Obsolete
+Status  
+: **Entschieden**
 
-Updated
-: 30-Jun-2024
+Aktualisiert  
+: 19-Nov-2024
 
-### Problem statement
+### Problemstellung
 
-Should we perform database CRUD (create, read, update, delete) operations by writing plain SQL or by using SQLAlchemy as object-relational mapper?
+Für die Entwicklung des Backends gab es keine Wahl, da der Kursplan die Verwendung von Flask vorgab.  
 
-Our web application is written in Python with Flask and connects to an SQLite database. To complete the current project, this setup is sufficient.
+Obwohl alternative Frameworks wie Django für größere Projekte besser geeignet sein könnten, war Flask für die Kursanforderungen optimal, da es leicht und schnell zu lernen ist. 
 
-We intend to scale up the application later on, since we see substantial business value in it.
+### Entscheidung
 
+Wir verwenden **Flask** als Backend-Framework.  
 
+Die Entscheidung basiert auf den Vorgaben des Lehrplans. Flask bietet jedoch auch praktische Vorteile für kleine Projekte wie unser MVP (Minimum Viable Product). Es ist flexibel, erfordert wenig Einrichtung und erlaubt eine einfache Integration mit Firebase.
 
-Therefore, we will likely:
-Therefore, we will likely:
-Therefore, we will likely:
+*Entscheidung getroffen von:* Lehrplananforderung.
 
-+ Change the database schema multiple times along the way, and
-+ Switch to a more capable database system at some point.
+### Betrachtete Optionen
 
-### Decision
+Flask war die einzige Option im Rahmen des Kurses. Django oder andere Frameworks wurden nicht in Betracht gezogen.
 
-We stick with plain SQL.
-
-Our team still has to come to grips with various technologies new to us, like Python and CSS. Adding another element to our stack will slow us down at the moment.
-
-Also, it is likely we will completely re-write the app after MVP validation. This will create the opportunity to revise tech choices in roughly 4-6 months from now.
-*Decision was taken by:* github.com/joe, github.com/jane, github.com/maxi
-
-### Regarded options
-
-We regarded two alternative options:
-
-+ Plain SQL
-+ SQLAlchemy
-
-| Criterion | Plain SQL | SQLAlchemy |
-| --- | --- | --- |
-| **Know-how** | ✔️ We know how to write SQL | ❌ We must learn ORM concept & SQLAlchemy |
-| **Change DB schema** | ❌ SQL scattered across code | ❔ Good: classes, bad: need Alembic on top |
-| **Switch DB engine** | ❌ Different SQL dialect | ✔️ Abstracts away DB engine |
+| Kriterium                  | Flask                  |
+| -------------------------- | ---------------------- |
+| **Vorgabe durch Lehrplan** | ✔️ Erfüllt            |
+| **Flexibilität**           | ✔️ Hochgradig anpassbar |
+| **Einfachheit**            | ✔️ Einfach für Einsteiger |
+| **Integration mit Firebase** | ✔️ Einfach           |
 
 ---
+
+## 03: Frontend Framework - Bootstrap vs. Custom CSS
+
+### Meta
+
+Status  
+: **Entschieden**
+
+Aktualisiert  
+: 19-Nov-2024
+
+### Problemstellung
+
+Für das Frontend mussten wir entscheiden, ob wir ein vorgefertigtes CSS-Framework wie Bootstrap nutzen oder eigene CSS-Stile entwickeln. Die Hauptüberlegungen umfassten die einfache Erstellung responsiver Designs, die Entwicklungsgeschwindigkeit und die allgemeine Optik der Anwendung.
+
+### Entscheidung
+
+Wir haben uns für **Bootstrap** als primäres CSS-Framework entschieden.  
+
+Bootstraps responsives Grid-System und vorgefertigte Komponenten ermöglichten es uns, schnell eine Oberfläche zu gestalten, die auf verschiedenen Bildschirmgrößen funktioniert. Durch Bootstrap wurde sichergestellt, dass das UI konsistent ist, ohne dass viel Zeit in die Entwicklung von individuellen Stilen investiert werden musste.  
+
+*Entscheidung getroffen von:* Veysel Sam (Frontend Lead).
+
+### Betrachtete Optionen
+
+Wir haben zwei Alternativen betrachtet:
+
++ Bootstrap  
++ Eigenes CSS  
+
+| Kriterium                  | Bootstrap              | Eigenes CSS          |
+| -------------------------- | ---------------------- | ------------------- |
+| **Responsivität**          | ✔️ Eingebautes Grid-System | ❌ Manuelle Implementierung erforderlich |
+| **Entwicklungsgeschwindigkeit** | ✔️ Schnell mit vorgefertigten Komponenten | ❌ Langsamer durch individuelle Kodierung |
+| **Design-Konsistenz**      | ✔️ Hoch                | ❔ Hängt von den Fähigkeiten des Entwicklers ab |
+| **Anpassbarkeit**          | ❔ Eingeschränkt durch Framework | ✔️ Vollständig anpassbar |
+
+---
+
+### Zusammenfassung der Entscheidungen
+
+1. **Datenbank**: Firebase Firestore für Echtzeit-Updates, Skalierbarkeit und Lernmöglichkeiten mit neuen Technologien.  
+2. **Backend-Framework**: Flask, wie durch den Lehrplan vorgegeben.  
+3. **Frontend-Styling**: Bootstrap für schnelle Entwicklung und konsistente Responsivität.
+
+Jede Entscheidung wurde getroffen, um das Ziel zu erreichen, ein funktionales, skalierbares und benutzerfreundliches MVP innerhalb der Projektzeit zu erstellen.

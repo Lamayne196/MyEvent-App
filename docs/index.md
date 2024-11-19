@@ -10,19 +10,25 @@ nav_order: 0
 
 # MyEvent App
 
-[Project description]
+<h3>Projektbeschreibung:</h3>
 
-## Team members
+Wir entwickeln eine Webapplikation, die es Speakern ermöglicht, ihre
+Events und Termine zu veröffentlichen. Gleichzeitig können Nutzer die
+Speaker nach ihren Interessen sortieren und gezielt nach Veranstaltungen
+suchen, die für sie relevant sind. Außerdem können Nutzer mit einer RSVP Funktion reagieren.
 
-### [Jane Dane]
+## Team members 65Coders
+
+### [Lamine Touré]
 
 About
-: Some info about Jane
+: Ich bin Lamine und bin 28 Jahre alt.
+Ich lese und programmiere gerne und versuche in allen Lebensbereichen besser zu werden. <br> Ich freue mich die erkentnisse die ich in diesem Projekt ehalten werden für mein berufliche laufbahn mitzunehmen.
 
 Matr.-Nr.
 : 1234567
 
-### [Joe Doe]
+### [Veysel Sam]
 
 About
 : Some info about Joe
