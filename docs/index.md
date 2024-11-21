@@ -12,7 +12,7 @@ nav_order: 0
 
 <h3>Projektbeschreibung:</h3>
 
-Wir entwickeln eine Webapplikation, die es Speakern ermöglicht, ihre
+Wir entwickeln eine Webapplikation, die es Speakern und Veranstaltende ermöglicht, ihre
 Events und Termine zu veröffentlichen. Gleichzeitig können Nutzer die
 Speaker nach ihren Interessen sortieren und gezielt nach Veranstaltungen
 suchen, die für sie relevant sind. Außerdem können Nutzer mit einer RSVP Funktion reagieren.
