@@ -19,7 +19,7 @@ nav_order: 1
 
 ## [Lamine Touré]
 
-### **Achieved Goals**
+### **Goals**
 - **Integration von Firebase-Diensten in die Flask-App**   
 - **Session-Verwaltung für Event-Ersteller**:
   - Login-System mit Session-Tracking erfolgreich implementiert. 
@@ -32,6 +32,14 @@ nav_order: 1
 - **Unit-Tests und Debugging**:
   - Validierung der APIs und Fehlerbehandlung abgeschlossen.  
 
+### **Goals**
+-
+
+---
+
+### **Achieved Goals**
+-
+---
 
 ### **Missed Goals**
 -

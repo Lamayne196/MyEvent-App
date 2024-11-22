@@ -80,7 +80,3 @@ Unsere Lösung schafft Mehrwert, indem sie eine Brücke zwischen Veranstaltern u
 4. **RSVP:**  
    - Mit einem Klick Interesse an einem Event bekunden.  
 
-Durch diese klar definierten Journeys wird sowohl die Nutzererfahrung für Speaker als auch für Teilnehmer optimiert.  
-
----
-
