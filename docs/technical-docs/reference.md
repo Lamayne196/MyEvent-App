@@ -24,62 +24,55 @@ nav_order: 3
 {: toc }
 </details>
 
-## [Section / module]
+## Auth Routes
 
-### `function_definition()`
+### `login()`
 
-**Route:** `/route/`
+**Route:** `/login`
 
-**Methods:** `POST` `GET` `PATCH` `PUT` `DELETE`
+**Methods:** `GET` `POST`
 
-**Purpose:** [Short explanation of what the function does and why]
+**Purpose:**  
+Verarbeitet die Login-Anfrage eines Nutzers. Überprüft, ob die eingegebene E-Mail und das Passwort mit den in der Firebase-Datenbank gespeicherten Nutzerdaten übereinstimmen. Bei erfolgreicher Anmeldung wird der Nutzer auf das Dashboard weitergeleitet, bei Fehlern wird eine Fehlermeldung angezeigt.
 
-**Sample output:**
-
-[Show an image, string output, or similar illustration -- or write NONE if function generates no output]
-
----
-
-## [Example, delete this section] Show to-do lists
-
-### `get_lists()`
-
-**Route:** `/lists/`
-
-**Methods:** `GET`
-
-**Purpose:** Show all to-do lists.
-
-**Sample output:**
-
-![get_lists() sample](../assets/images/fswd-intro_00.png)
+**Sample output:**  
+- Erfolgreiche Anmeldung: Weiterleitung zum Dashboard.  
+- Fehlermeldung: `Ungültige Anmeldeinformationen.`  
 
 ---
 
-### `get_list_todos(list_id)`
+### `register()`
 
-**Route:** `/lists/<int:list_id>`
+**Route:** `/register`
 
-**Methods:** `GET`
+**Methods:** `GET` `POST`
 
-**Purpose:** Retrieve all to-do items of to-do list with ID `list_id` from database and present to user.
+**Purpose:**  
+Verarbeitet die Registrierung eines neuen Nutzers. Überprüft, ob die eingegebenen Passwörter übereinstimmen und ob die E-Mail-Adresse bereits vergeben ist. Bei erfolgreicher Registrierung wird der Nutzer in Firebase gespeichert und zur Login-Seite weitergeleitet.
 
-**Sample output:**
-
-![get_list_todos() sample](../assets/images/fswd-intro_02.png)
+**Sample output:**  
+- Erfolgreiche Registrierung: `Benutzer erfolgreich registriert.`  
+- Fehlermeldung: `Passwörter stimmen nicht überein.` oder `Benutzername bereits vergeben.`
 
 ---
 
-## [Example, delete this section] Insert sample data
+### `logout()`
 
-### `run_insert_sample()`
-
-**Route:** `/insert/sample`
+**Route:** `/logout`
 
 **Methods:** `GET`
 
-**Purpose:** Flush the database and insert sample data set
+**Purpose:**  
+Verarbeitet die Abmeldung eines Nutzers. Entfernt den Nutzer aus der Sitzung (Session) und leitet ihn zurück zur Home-Seite.
 
-**Sample output:**
+**Sample output:**  
+- Erfolgreiche Abmeldung: `Du hast dich erfolgreich abgemeldet.`  
 
-Browser shows: `Database flushed and populated with some sample data.`
+---
+
+## Additional Notes
+
+- Die Auth-Routen sind in einer separaten `authRoute.py`-Datei definiert und in der Hauptapplikation (`app.py`) über Blueprints registriert.
+- **Flask Sessions** werden verwendet, um die Benutzersitzung zu verwalten und die Anmeldeinformationen während der Sitzung zu speichern.
+- **Firebase Firestore** wird verwendet, um Nutzerdaten (E-Mail und Passwort) zu speichern und zu validieren.
+
