@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Event Card -->
+    <div class="card shadow-lg border-0">
+        <div class="row g-0">
+            <!-- Event Image -->
+            <div class="col-md-6">
+                {% if event.image_url %}
+                    <img src="{{ event.image_url }}" class="img-fluid rounded-start h-100 w-100 object-fit-cover" alt="{{ event.title }}">
+                {% else %}
+                    <img src="/static/images/default_event.jpg" class="img-fluid rounded-start h-100 w-100 object-fit-cover" alt="Default Event Image">
+                {% endif %}
+            </div>
+            <!-- Event Details -->
+            <div class="col-md-6 bg-dark text-white d-flex flex-column justify-content-center">
+                <div class="card-body p-5">
+                    <h1 class="card-title">{{ event.title }}</h1>
+                    <p class="card-text my-3"><strong>Datum:</strong> {{ event.date }}</p>
+                    <p class="card-text my-3"><strong>Ort:</strong> {{ event.location }}</p>
+                    <p class="card-text my-3"><strong>Kategorie:</strong> {{ event.category }}</p>
+                    <p><strong>Format:</strong> {{ event.format }}</p>
+                    <p><strong>Plattform:</strong> {{ event.platform }}</p> 
+                    <p><strong>Tags:</strong>
+                        {% for tag in event.tags %}
+                        <span class="badge bg-secondary">{{ tag }}</span>
+                        {% endfor %}
+                    </p>
+                    <p class="card-text my-3"><strong>Teilnehmer:</strong> {{ event.rsvp_count if event.rsvp_count else 0 }} / {{ event.max_participants }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Editing Section -->
+    <div class="mt-5">
+        <h2>Event bearbeiten</h2>
+        <form method="POST" class="mt-3">
+            <div class="mb-3">
+                <label for="title" class="form-label">Name:</label>
+                <input type="text" id="title" name="title" class="form-control" value="{{ event.title }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Datum:</label>
+                <input type="date" id="date" name="date" class="form-control" value="{{ event.date }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Ort:</label>
+                <input type="text" id="location" name="location" class="form-control" value="{{ event.location }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Beschreibung:</label>
+                <textarea id="description" name="description" class="form-control" rows="3" required>{{ event.description }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Kategorie:</label>
+                <select id="category" name="category" class="form-select">
+                    <option value="Kategorie 1" {% if event.category == "Kategorie 1" %}selected{% endif %}>Kategorie 1</option>
+                    <option value="Kategorie 2" {% if event.category == "Kategorie 2" %}selected{% endif %}>Kategorie 2</option>
+                    <option value="Kategorie 3" {% if event.category == "Kategorie 3" %}selected{% endif %}>Kategorie 3</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="max_participants" class="form-label">Maximale Teilnehmerzahl:</label>
+                <input type="number" id="max_participants" name="max_participants" class="form-control" value="{{ event.max_participants }}" required>
+            </div>
+            <!-- Neues Format-Feld (Online/Präsenz) -->
+            <div class="mb-3">
+                <label for="format" class="form-label">Format:</label>
+                <select id="format" name="format" class="form-select">
+                    <option value="Online" {% if event.format == "Online" %}selected{% endif %}>Online</option>
+                    <option value="Präsenz" {% if event.format == "Präsenz" %}selected{% endif %}>Präsenz</option>
+                </select>
+            </div>
+
+            <!-- Neues Plattform-Feld (Konsole/PC/Handy) -->
+            <div class="mb-3">
+                <label for="platform" class="form-label">Plattform:</label>
+                <select id="platform" name="platform" class="form-select">
+                    <option value="Konsole" {% if event.platform == "Konsole" %}selected{% endif %}>Konsole</option>
+                    <option value="PC" {% if event.platform == "PC" %}selected{% endif %}>PC</option>
+                    <option value="Handy" {% if event.platform == "Handy" %}selected{% endif %}>Handy</option>
+                    <option value="Alle" {% if event.platform == "Alle" %}selected{% endif %}>Alle</option>
+                </select>
+            </div>
+
+            <button type="submit" name="update_event" class="btn btn-success w-100">Speichern</button>
+        </form>
+
+        <!-- Event Deletion -->
+        <form method="POST" action="{{ url_for('event.deleteEvent', event_id=event.id) }}" class="mt-3">
+            <button type="submit" name="delete_event" class="btn btn-danger w-100">Event löschen</button>
+        </form>
+
+        <!-- View Participants -->
+        <a href="{{ url_for('event.participantList', event_id=event.id) }}" class="btn btn-info mt-3 w-100">Teilnehmerliste ansehen</a>
+    </div>
+
+    <!-- Back to Dashboard -->
+    <div class="text-center mt-5">
+        <a href="{{ url_for('dashboard.dashboard_view') }}" class="btn btn-secondary">Zurück zum Dashboard</a>
+    </div>
+</div>
+{% endblock %}

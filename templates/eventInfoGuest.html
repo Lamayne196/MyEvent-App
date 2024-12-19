@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Hero Section -->
+    <div class="card shadow-lg border-0">
+        <div class="row g-0">
+            <!-- Event Image -->
+            <div class="col-md-6">
+                {% if event.image_url %}
+                    <img src="{{ event.image_url }}" class="img-fluid rounded-start h-100 w-100 object-fit-cover" alt="{{ event.title }}">
+                {% else %}
+                    <img src="/static/images/default_event.jpg" class="img-fluid rounded-start h-100 w-100 object-fit-cover" alt="Default Event Image">
+                {% endif %}
+            </div>
+            <!-- Event Details -->
+            <div class="col-md-6 bg-dark text-white d-flex flex-column justify-content-center">
+                <div class="card-body p-5">
+                    <h1 class="card-title">{{ event.title }}</h1>
+                    <p class="card-text my-3"><strong>Datum:</strong> {{ event.date }}</p>
+                    <p class="card-text my-3"><strong>Ort:</strong> {{ event.location }}</p>
+                    <p class="card-text my-3"><strong>Kategorie:</strong> {{ event.category }}</p>
+                    <p><strong>Format:</strong> {{ event.format }}</p>
+                    <p><strong>Plattform:</strong> {{ event.platform }}</p> 
+                    <p><strong>Tags:</strong>
+                        {% for tag in event.tags %}
+                        <span class="badge bg-secondary">{{ tag }}</span>
+                        {% endfor %}
+                    </p>
+                    <p class="card-text my-3"><strong>Teilnehmer:</strong> {{ event.rsvp_count if event.rsvp_count else 0 }} / {{ event.max_participants }}</p>
+                    <a href="#details" class="btn btn-primary w-100 mt-3">Mehr Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Additional Info -->
+    <div id="details" class="mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Event Beschreibung</h2>
+                <p>{{ event.description }}</p>
+            </div>
+            <div class="col-lg-4">
+                <!-- RSVP Section -->
+                {% if rsvp_status %}
+                    <div class="alert alert-success text-center">
+                        Du hast bereits zugesagt!
+                    </div>
+                    <form method="POST" action="{{ url_for('event.rsvp', event_id=event.id) }}">
+                        <input type="hidden" name="email_participant" value="{{ session.get('user') }}">
+                        <button type="submit" name="cancel_rsvp" class="btn btn-danger w-100">Absagen</button>
+                    </form>
+                {% else %}
+                    {% if event.rsvp_count >= event.max_participants %}
+                        <div class="alert alert-warning text-center">
+                            Dieses Event hat das Teilnehmerlimit erreicht.
+                        </div>
+                    {% else %}
+                        <h4 class="text-center">RSVP</h4>
+                        <form method="POST" action="{{ url_for('event.rsvp', event_id=event.id) }}">
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">Vorname:</label>
+                                <input type="text" id="first_name" name="first_name" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Nachname:</label>
+                                <input type="text" id="last_name" name="last_name" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email_participant" class="form-label">Email:</label>
+                                <input type="email" id="email_participant" name="email_participant" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Zusage (RSVP)</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-5">
+        <a href="{{ url_for('home.home_view') }}" class="btn btn-secondary">Zurück zur Startseite</a>
+    </div>
+</div>
+{% endblock %}

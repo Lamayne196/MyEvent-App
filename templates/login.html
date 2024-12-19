@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Login | MyEvent{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-box">
+        <h2 class="text-center mb-4">Login</h2>
+        <form method="POST">
+            {{ form.csrf_token }} <!-- CSRF-Token für Sicherheit -->
+
+            <div class="form-group mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", placeholder="Email eingeben", required=True) }}
+                {% for error in form.email.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group mb-4">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="Passwort eingeben", required=True) }}
+                {% for error in form.password.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="d-flex justify-content-between mb-4">
+                <a href="{{ url_for('auth.register') }}" class="text-gradient">Account erstellen</a>
+            </div>
+
+            <button type="submit" class="btn btn-gradient w-100">Anmelden</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

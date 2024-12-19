@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | MyEvent{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Willkommen im Dashboard {{ username }}!</h1>
+        <div>
+            <a href="{{ url_for('event.createEvent') }}" class="btn btn-primary me-2">Event erstellen</a>
+        </div>
+    </div>
+
+    <!-- Eventliste -->
+    <h2>Deine Events:</h2>
+    {% if events %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for event in events %}
+        <div class="col">
+            <a href="{{ url_for('event.eventInfo', event_id=event.id) }}" class="text-decoration-none text-reset">
+                <div class="card h-100">
+                    <img src="{{ event.image_url }}" class="card-img-top" alt="{{ event.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        <p class="card-text"><strong>Datum:</strong> {{ event.date }}</p>
+                        <p class="card-text"><strong>Ort:</strong> {{ event.location }}</p>
+                        <div class="d-flex justify-content-between">
+                            <form method="POST" action="{{ url_for('event.deleteEvent', event_id=event.id) }}" style="margin: 0;">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Löschen</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-danger">Du hast noch keine Events erstellt.</p>
+    {% endif %}
+</div>
+{% endblock %}

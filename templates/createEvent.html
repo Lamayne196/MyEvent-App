@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Event erstellen | MyEvent{% endblock %}
+
+{% block content %}
+<div class="create-event-container">
+    <div class="create-event-box p-4">
+        <h2 class="text-center mb-4">Event erstellen</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.csrf_token }} <!-- CSRF-Token für Sicherheit -->
+
+            <div class="mb-3">
+                {{ form.title.label(class="form-label") }}
+                {{ form.title(class="form-control", placeholder="Titel eingeben") }}
+                {% for error in form.title.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control", rows="3", placeholder="Beschreibe dein Event...") }}
+                {% for error in form.description.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.date.label(class="form-label") }}
+                {{ form.date(class="form-control") }}
+                {% for error in form.date.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.location.label(class="form-label") }}
+                {{ form.location(class="form-control", placeholder="Ort eingeben") }}
+                {% for error in form.location.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.category.label(class="form-label") }}
+                {{ form.category(class="form-select") }}
+                {% for error in form.category.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.max_participants.label(class="form-label") }}
+                {{ form.max_participants(class="form-control", placeholder="Maximale Teilnehmerzahl") }}
+                {% for error in form.max_participants.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.format.label(class="form-label") }}
+                {{ form.format(class="form-select") }}
+                {% for error in form.format.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.platform.label(class="form-label") }}
+                {{ form.platform(class="form-select") }}
+                {% for error in form.platform.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.tags.label(class="form-label") }}
+                {{ form.tags(class="form-control", placeholder="Tags (kommagetrennt)") }}
+                {% for error in form.tags.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.image.label(class="form-label") }}
+                {{ form.image(class="form-control") }}
+                {% for error in form.image.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-gradient w-100">Event erstellen</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

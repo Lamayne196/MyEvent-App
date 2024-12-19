@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MyEvent{% endblock %}</title>
+    
+    <!-- Bootstrap Stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Benutzerdefinierte Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="navbar navbar-dark">
+        <div class="container-fluid d-flex justify-content-between">
+            <a class="navbar-brand" href="{{ url_for('home.home_view') }}">MyEvent</a>
+            <div class="d-flex align-items-center">
+                <a href="{{ url_for('dashboard.dashboard_view')}}" class="text-light me-3">Mein Dashboard</a>
+                <a href="#" class="text-light me-3">Über uns</a>
+                {% if session.get('user') %}
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light">Login</a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light">Registrieren</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Flash-Nachrichten -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Hauptinhalt -->
+    <main class="container my-5">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-light py-3">
+        <div class="container text-center">
+            <p>&copy; 2024 MyEvent</p>
+            <a href="#" class="text-light me-3">Impressum</a>
+            <a href="#" class="text-light">Datenschutz</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

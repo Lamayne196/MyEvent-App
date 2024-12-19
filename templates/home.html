@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="btn-gradient">Alle Events</h1>
+
+<!-- Suchformular mit Filteroptionen -->
+<form method="GET" action="{{ url_for('home.home_view') }}" class="mb-4">
+    <div class="row">
+        <div class="col-md-3">
+            <label for="search" class="form-label">Suche:</label>
+            <input type="text" id="search" name="search" class="form-control" placeholder="z.B. Titel, Ort" value="{{ request.args.get('search', '') }}">
+        </div>
+        <div class="col-md-2">
+            <label for="category" class="form-label">Kategorie:</label>
+            <select id="category" name="category" class="form-select">
+                <option value="">Alle</option>
+                <option value="Action" {% if request.args.get('category') == 'Action' %}selected{% endif %}>Action</option>
+                <option value="Abenteuer" {% if request.args.get('category') == 'Abenteuer' %}selected{% endif %}>Abenteuer</option>
+                <option value="Rollenspiele (RPGs)" {% if request.args.get('category') == 'Rollenspiele (RPGs)' %}selected{% endif %}>Rollenspiele (RPGs)</option>
+                <option value="Strategie" {% if request.args.get('category') == 'Strategie' %}selected{% endif %}>Strategie</option>
+                <option value="Simulationen" {% if request.args.get('category') == 'Simulationen' %}selected{% endif %}>Simulationen</option>
+                <option value="Sport und Rennen" {% if request.args.get('category') == 'Sport und Rennen' %}selected{% endif %}>Sport und Rennen</option>
+                <option value="Puzzles und Denkspiele" {% if request.args.get('category') == 'Puzzles und Denkspiele' %}selected{% endif %}>Puzzles und Denkspiele</option>
+                <option value="MOBA" {% if request.args.get('category') == 'MOBA' %}selected{% endif %}>MOBA</option>
+                <option value="Battle Royale" {% if request.args.get('category') == 'Battle Royale' %}selected{% endif %}>Battle Royale</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="platform" class="form-label">Plattform:</label>
+            <select id="platform" name="platform" class="form-select">
+                <option value="">Alle</option>
+                <option value="Konsole" {% if request.args.get('platform') == 'Konsole' %}selected{% endif %}>Konsole</option>
+                <option value="PC" {% if request.args.get('platform') == 'PC' %}selected{% endif %}>PC</option>
+                <option value="Handy" {% if request.args.get('platform') == 'Handy' %}selected{% endif %}>Handy</option>
+                <option value="Alle" {% if request.args.get('platform') == 'Alle' %}selected{% endif %}>Alle</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="format" class="form-label">Format:</label>
+            <select id="format" name="format" class="form-select">
+                <option value="">Alle</option>
+                <option value="Online" {% if request.args.get('format') == 'Online' %}selected{% endif %}>Online</option>
+                <option value="Präsenz" {% if request.args.get('format') == 'Präsenz' %}selected{% endif %}>Präsenz</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Suchen</button>
+        </div>
+    </div>
+</form>
+
+<!-- Aktive Filter und Tags anzeigen -->
+<div class="mb-4">
+    <strong>Aktive Filter:</strong>
+    <ul class="list-inline">
+        {% if request.args.get('search') %}
+        <li class="list-inline-item">
+            <span class="badge bg-secondary">Suche: {{ request.args.get('search') }}</span>
+            <a href="{{ url_for('home.home_view', category=request.args.get('category'), platform=request.args.get('platform'), format=request.args.get('format')) }}" class="text-decoration-none">✕</a>
+        </li>
+        {% endif %}
+        {% if request.args.getlist('tag') %}
+        {% for tag in request.args.getlist('tag') %}
+        <li class="list-inline-item">
+            <span class="badge bg-primary">Tag: {{ tag }}</span>
+            <a href="{{ url_for('home.home_view', tag=request.args.getlist('tag')|reject('eq', tag)|join('&tag='), category=request.args.get('category'), platform=request.args.get('platform'), format=request.args.get('format')) }}" class="text-decoration-none">✕</a>
+        </li>
+        {% endfor %}
+        {% endif %}
+        {% if request.args.get('category') %}
+        <li class="list-inline-item">
+            <span class="badge bg-secondary">Kategorie: {{ request.args.get('category') }}</span>
+            <a href="{{ url_for('home.home_view', tag=request.args.getlist('tag')|join('&tag='), platform=request.args.get('platform'), format=request.args.get('format')) }}" class="text-decoration-none">✕</a>
+        </li>
+        {% endif %}
+        {% if request.args.get('platform') %}
+        <li class="list-inline-item">
+            <span class="badge bg-secondary">Plattform: {{ request.args.get('platform') }}</span>
+            <a href="{{ url_for('home.home_view', tag=request.args.getlist('tag')|join('&tag='), category=request.args.get('category'), format=request.args.get('format')) }}" class="text-decoration-none">✕</a>
+        </li>
+        {% endif %}
+        {% if request.args.get('format') %}
+        <li class="list-inline-item">
+            <span class="badge bg-secondary">Format: {{ request.args.get('format') }}</span>
+            <a href="{{ url_for('home.home_view', tag=request.args.getlist('tag')|join('&tag='), category=request.args.get('category'), platform=request.args.get('platform')) }}" class="text-decoration-none">✕</a>
+        </li>
+        {% endif %}
+    </ul>
+    <a href="{{ url_for('home.home_view') }}" class="btn btn-outline-secondary btn-sm">Filter zurücksetzen</a>
+</div>
+
+<!-- Liste aller Tags -->
+<div class="mb-4">
+    <strong>Tags:</strong>
+    {% for tag in all_tags %}
+    <a href="{{ url_for('home.home_view', tag=tag, category=request.args.get('category'), platform=request.args.get('platform'), format=request.args.get('format')) }}" class="badge bg-secondary text-decoration-none">{{ tag }}</a>
+    {% endfor %}
+</div>
+
+<!-- Event Cards -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% if events %}
+        {% for event in events %}
+        <div class="col">
+            <a href="{{ url_for('event.eventInfo', event_id=event.id) }}" class="text-decoration-none text-reset">
+                <div class="card h-100">
+                    <img src="{{ event['image_url'] }}" class="card-img-top" alt="{{ event['title'] }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event['title'] }}</h5>
+                        <p class="card-text"><strong>Datum:</strong> {{ event['date'] }}</p>
+                        <p class="card-text"><strong>Ort:</strong> {{ event['location'] }}</p>
+                        <p class="card-text my-3"><strong>Kategorie:</strong> {{ event.category }}</p>
+                        <p><strong>Format:</strong> {{ event.format }}</p>
+                        <p><strong>Plattform:</strong> {{ event.platform }}</p>
+                        <p class="card-text"> {{ event.rsvp_count if event.rsvp_count else 0 }} / {{ event.max_participants }} Zusagen</p>
+                        <p><strong>Tags:</strong> 
+                            {% for tag in event.tags %}
+                            <span class="badge bg-secondary">{{ tag }}</span>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Keine Events gefunden.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
